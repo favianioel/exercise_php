@@ -1,48 +1,19 @@
 <?php
+
+require_once(__DIR__.'/init.php');
+use Exercise\Db;
+
 // Check existence of id parameter before processing further
 if(isset($_GET["name"]) && !empty(trim($_GET["name"]))){
-    // Include config file
-    include("includes/config.php");
+    $db = new Db();
+    $param_name = trim($_GET["name"]);
 
-    $sql = "SELECT articles.title  FROM articles 
-            INNER JOIN authors ON authors.id=articles.author_id
-            WHERE authors.name = ?";
-    
-    if($stmt = $mysqli->prepare($sql)){
-        // Bind variables to the prepared statement as parameters
-        $stmt->bind_param("s", $param_name);
-        
-        // Set parameters
-        $param_name = trim($_GET["name"]);
-        
-        // Attempt to execute the prepared statement
-        if($stmt->execute()){
-            $result = $stmt->get_result();
-        	$results = $result->fetch_all(MYSQLI_ASSOC);
-            
-            // Close statement
-            $stmt->close();
-            
-        } else{
-            echo "Oops! Something went wrong. Please try again later.";
-        }
-    }
-
-    
-    // Close connection
-    $mysqli->close();
-} else{
-    // URL doesn't contain id parameter. Redirect to error page
-    header("location: error.php");
-    exit();
+    $result = $db->viewAuthor($param_name);
+    $results = $result->fetchAll();
 }
+
+include __DIR__.'/templates/header.php';
 ?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <?php include("includes/head-tag-contents.php");?>
-</head>
-<body>
     <div class="wrapper">
         <div class="container-fluid">
             <div class="row">
@@ -65,5 +36,6 @@ if(isset($_GET["name"]) && !empty(trim($_GET["name"]))){
             </div>        
         </div>
     </div>
-</body>
-</html>
+<?php 
+include __DIR__.'/templates/footer.php';
+

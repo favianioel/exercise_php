@@ -1,14 +1,15 @@
-<?php include("includes/config.php");?>
-<!DOCTYPE html>
-<html>
-<head>
-    <?php include("includes/head-tag-contents.php");?>
-</head>
-<body>
-    
-<?php $selected = 'categories'; ?>
-<?php include("includes/navigation.php");?>
 
+<?php 
+require_once(__DIR__.'/init.php');
+use Exercise\Db;
+
+$selected = 'categories';
+
+$db = new Db();
+$result = $db->select('categories');
+
+include __DIR__.'/templates/header.php';
+?>
     <div class="wrapper">
         <div class="container-fluid">
             <div class="row">
@@ -18,10 +19,7 @@
                         <!-- <a href="create.php" class="btn btn-success pull-right">Add New Categories</a> -->
                     </div>
                     <?php
-                    // Attempt select query execution
-                    $sql = "SELECT * FROM categories";
-                    if($result = $mysqli->query($sql)){
-                        if($result->num_rows > 0){
+                        if($result){
                             echo "<table class='table table-bordered table-striped'>";
                                 echo "<thead>";
                                     echo "<tr>";
@@ -30,7 +28,7 @@
                                     echo "</tr>";
                                 echo "</thead>";
                                 echo "<tbody>";
-                                while($row = $result->fetch_array()){
+                                while($row = $result->fetch()){
                                     echo "<tr>";
                                         echo "<td>" . $row['id'] . "</td>";
                                         echo "<td><a href='view_categories.php?name=".$row['categorie']."&id=". $row['id'] ."'>" . $row['categorie'] . "</a></td>";
@@ -38,21 +36,10 @@
                                 }
                                 echo "</tbody>";                            
                             echo "</table>";
-                            // Free result set
-                            $result->free();
-                        } else{
-                            echo "<p class='lead'><em>No records were found.</em></p>";
                         }
-                    } else{
-                        echo "ERROR: Could not able to execute $sql. " . $mysqli->error;
-                    }
-                    
-                    // Close connection
-                    $mysqli->close();
                     ?>
                 </div>
             </div>        
         </div>
     </div>
-</body>
-</html>
+<?php include __DIR__.'/templates/footer.php';

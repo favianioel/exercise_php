@@ -1,14 +1,14 @@
-<?php include("includes/config.php");?>
-<!DOCTYPE html>
-<html>
-<head>
-	<?php include("includes/head-tag-contents.php");?>
-</head>
-<body>
+<?php 
+require_once(__DIR__.'/init.php');
+use Exercise\Db;
 
-<?php $selected = 'articles'; ?>
-<?php include("includes/navigation.php");?>
+$selected = 'articles';
 
+$db = new Db();
+$result = $db->select('articles');
+
+include __DIR__.'/templates/header.php';
+?>
 <div class="wrapper">
         <div class="container-fluid">
             <div class="row">
@@ -18,10 +18,7 @@
                         <a href="create_article.php" class="btn btn-success pull-right">Add New Articles</a>
                     </div>
                     <?php
-                    // Attempt select query execution
-                    $sql = "SELECT * FROM articles";
-                    if($result = $mysqli->query($sql)){
-                        if($result->num_rows > 0){
+                        if ($result){
                             echo "<table class='table table-bordered table-striped'>";
                                 echo "<thead>";
                                     echo "<tr>";
@@ -30,34 +27,25 @@
                                     echo "</tr>";
                                 echo "</thead>";
                                 echo "<tbody>";
-                                while($row = $result->fetch_array()){
+                                    
+                                  // output data of each row
+                                  while($row = $result->fetch()) {
                                     echo "<tr>";
                                         echo "<td>" . $row['id'] . "</td>";
                                         echo "<td>" . $row['title'] . "</td>";
                                         echo "<td>";
                                             echo "<a href='view_article.php?id=". $row['id'] ."' title='View Article' data-toggle='tooltip'><span class='glyphicon glyphicon-eye-open'></span></a>";
                                             echo "<a href='update_article.php?id=". $row['id'] ."' title='Update Article' data-toggle='tooltip'><span class='glyphicon glyphicon-pencil'></span></a>";
-                                            // echo "<a href='delete.php?id=". $row['id'] ."' title='Delete Record' data-toggle='tooltip'><span class='glyphicon glyphicon-trash'></span></a>";
                                         echo "</td>";
                                     echo "</tr>";
                                 }
                                 echo "</tbody>";                            
                             echo "</table>";
-                            // Free result set
-                            $result->free();
-                        } else{
-                            echo "<p class='lead'><em>No records were found.</em></p>";
                         }
-                    } else{
-                        echo "ERROR: Could not able to execute $sql. " . $mysqli->error;
-                    }
-                    
-                    // Close connection
-                    $mysqli->close();
                     ?>
                 </div>
             </div>        
         </div>
     </div>
-</body>
-</html>
+<?php 
+include __DIR__.'/templates/footer.php';

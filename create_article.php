@@ -1,5 +1,7 @@
 <?php
-include("includes/config.php");
+
+require_once(__DIR__.'/init.php');
+use Exercise\Db;
 
 // Define variables and initialize with empty values
 $title = $author  = "";
@@ -24,45 +26,17 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         $author = $input_author;
     }
     
-    
     // Check input errors before inserting in database
     if(empty($title_err) && empty($author_err)){
-        // Prepare an insert statement
-        $sql = "INSERT INTO articles (title, author_id) VALUES (?, ?)";
- 
-        if($stmt = $mysqli->prepare($sql)){
-            // Bind variables to the prepared statement as parameters
-            $stmt->bind_param("si", $param_title, $param_author);
-            
-            // Set parameters
-            $param_title = $title;
-            $param_author = $author;
-            
-            // Attempt to execute the prepared statement
-            if($stmt->execute()){
-                // Records created successfully. Redirect to landing page
-                header("location: index.php");
-                exit();
-            } else{
-                echo "Something went wrong. Please try again later.";
-            }
-        }
-         
-        // Close statement
-        $stmt->close();
+        $db = new Db();
+        $db->insert('articles', ['title'=> $title, 'author_id' => $author]);
+        header("location: index.php");
+        exit();
     }
-    
-    // Close connection
-    $mysqli->close();
+
 }
+include __DIR__.'/templates/header.php';
 ?>
- 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-       <?php include("includes/head-tag-contents.php");?>
-</head>
-<body>
     <div class="wrapper">
         <div class="container-fluid">
             <div class="row">
@@ -89,5 +63,5 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             </div>        
         </div>
     </div>
-</body>
-</html>
+<?php 
+include __DIR__.'/templates/footer.php';

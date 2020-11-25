@@ -1,50 +1,21 @@
 <?php
+
+require_once(__DIR__.'/init.php');
+use Exercise\Db;
+
 // Check existence of id parameter before processing further
-if(isset($_GET["id"]) && !empty(trim($_GET["id"]))){
-    // Include config file
-    include("includes/config.php");
+if(isset($_GET["name"]) && !empty(trim($_GET["name"]))){
+    $db = new Db();
 
-    $sql = "SELECT articles.title
-        from articles inner join articles_categories
-        on articles_categories.articles_id = articles.id
-        where articles_categories.categories_id=?";
-    
-    if($stmt = $mysqli->prepare($sql)){
-        // Bind variables to the prepared statement as parameters
-        $stmt->bind_param("i", $param_id);
+    $param_id = trim($_GET["id"]);
+    $param_name = trim($_GET["name"]);
 
-        // Set parameters
-        $param_id = trim($_GET["id"]);
-        $param_name = trim($_GET["name"]);
-        
-        // Attempt to execute the prepared statement
-        if($stmt->execute()){
-            $result = $stmt->get_result();
-        	$results = $result->fetch_all(MYSQLI_ASSOC);
-            
-            // Close statement
-            $stmt->close();
-            
-        } else{
-            echo "Oops! Something went wrong. Please try again later.";
-        }
-    }
-
-    
-    // Close connection
-    $mysqli->close();
-} else{
-    // URL doesn't contain id parameter. Redirect to error page
-    header("location: error.php");
-    exit();
+    $result = $db->viewCategory($param_id);
+    $results = $result->fetchAll();
 }
+
+include __DIR__.'/templates/header.php';
 ?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <?php include("includes/head-tag-contents.php");?>
-</head>
-<body>
     <div class="wrapper">
         <div class="container-fluid">
             <div class="row">
@@ -67,5 +38,6 @@ if(isset($_GET["id"]) && !empty(trim($_GET["id"]))){
             </div>        
         </div>
     </div>
-</body>
-</html>
+<?php 
+include __DIR__.'/templates/footer.php';
+
