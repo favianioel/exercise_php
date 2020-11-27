@@ -33,7 +33,7 @@ if(isset($_POST["id"]) && !empty($_POST["id"])){
     if(empty($title_err) && empty($author_err)){
 
         $db = new Db();
-        $result = $db->update('articles', ['title' => $title, 'author_id' => $author], ['id' => (int)$id]);
+        $result = $db->updateArticleById($title, $author, $id);
         header("location: index.php");
         exit();
 
@@ -46,7 +46,7 @@ if(isset($_POST["id"]) && !empty($_POST["id"])){
         $id =  trim($_GET["id"]);
 
         $db = new Db();
-        $result = $db->select('articles', '*', ['id' => $id]);
+        $result = $db->selectAllByTableAndId('articles', $id);
         
         if($result){
             $row = $result->fetch();

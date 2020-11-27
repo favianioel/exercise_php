@@ -29,7 +29,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     // Check input errors before inserting in database
     if(empty($title_err) && empty($author_err)){
         $db = new Db();
-        $db->insert('articles', ['title'=> $title, 'author_id' => $author]);
+        $db->createArticle($title, $author);
         header("location: index.php");
         exit();
     }

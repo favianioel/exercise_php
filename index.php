@@ -5,7 +5,7 @@ use Exercise\Db;
 $selected = 'articles';
 
 $db = new Db();
-$result = $db->select('articles');
+$result = $db->selectAllByTable('articles');
 
 include __DIR__.'/templates/header.php';
 ?>

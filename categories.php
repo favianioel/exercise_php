@@ -6,7 +6,7 @@ use Exercise\Db;
 $selected = 'categories';
 
 $db = new Db();
-$result = $db->select('categories');
+$result = $db->selectAllByTable('categories');
 
 include __DIR__.'/templates/header.php';
 ?>
