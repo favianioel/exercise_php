@@ -32,6 +32,30 @@ class Db {
         return $this->con->query($sql, \PDO::FETCH_ASSOC);
     }
 
+    public function getAuthorById($id)
+    {
+        $sql = "SELECT * FROM authors 
+        WHERE authors.id = " . $this->escape($id);
+
+        return $this->con->query($sql, \PDO::FETCH_ASSOC);
+    }
+    
+    public function getCategorieById($id)
+    {
+        $sql = "SELECT * FROM categories 
+        WHERE categories.id = " . $this->escape($id);
+
+        return $this->con->query($sql, \PDO::FETCH_ASSOC);
+    }
+
+    public function getArticleById($id)
+    {
+        $sql = "SELECT * FROM articles 
+        WHERE articles.id = " . $this->escape($id);
+
+        return $this->con->query($sql, \PDO::FETCH_ASSOC);
+    }
+
     public function viewCategory($id)
     {
         $sql = "SELECT articles.title
