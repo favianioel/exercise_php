@@ -20,22 +20,28 @@ include __DIR__.'/header.php';
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
+                            <tr id="table-row">
+                                
+                            </tr>
+                            <!-- <tr>
                                 <td>id</td>
                                 <td>titlu</td>
                                 <td>
                                     <a href='view_article.php?id=' title='View Article' data-toggle='tooltip'><span class='glyphicon glyphicon-eye-open'></span></a>
                                     <a href='update_article.php?id=' title='Update Article' data-toggle='tooltip'><span class='glyphicon glyphicon-pencil'></span></a>
                                 </td>
-                            </tr>
+                            </tr> -->
                         </tbody>                            
                     </table>
                 </div>
             </div>        
         </div>
     </div>
-    <script type="text/javascript">
-        
+
+    <script type="text/template" id="article-list-item">
+        <a href='#articles/<%= id %>'><%= title %></a>
     </script>
+    <script type="text/javascript" src="backbone/articles.js"></script>
+    
 <?php 
 include __DIR__.'/footer.php';
