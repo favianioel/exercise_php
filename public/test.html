@@ -1,10 +1,34 @@
-<?php 
-require_once(__DIR__.'/../init.php');
-$selected = 'articles';
+<!DOCTYPE html>
+<html>
+<head>
+	<title>test handlebars</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.js"></script>
+	<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/underscore@1.12.0/underscore-min.js"></script>
+	<script type="text/javascript" src="backbone/handlebars-v4.7.6.js"></script>
+	<script type="text/javascript" src="backbone/backbone.js"></script>
+	<style type="text/css">
+	    .wrapper{
+	        width: 650px;
+	        margin: 0 auto;
+	    }
+	    .page-header h2{
+	        margin-top: 0;
+	    }
+	    table tr td:last-child a{
+	        margin-right: 15px;
+	    }
+	</style>
+	<script type="text/javascript">
+	    $(document).ready(function(){
+	        $('[data-toggle="tooltip"]').tooltip();   
+	    });
+	</script>
+</head>
+<body>
 
-include __DIR__.'/header.php';
-?>
-<div class="wrapper">
+	<div class="wrapper">
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-12">
@@ -21,7 +45,7 @@ include __DIR__.'/header.php';
                         </thead>
                         <tbody>
                             <tr id="table-row">
-                                <a href='#articles/1'>test</a>
+                                
                             </tr>
                             <!-- <tr>
                                 <td>id</td>
@@ -36,23 +60,11 @@ include __DIR__.'/header.php';
                 </div>
             </div>        
         </div>
-        <div id="content">
-            <h2>Article</h2>
-        </div>
     </div>
-
-
-
+    
     <script type="text/x-handlebars-template" id="article-list-item">
-        <a href='#articles/1'>test</a>
-    </script>
-    <script type="text/x-handlebars-template" id="article-details">
         {{ log this }}
-        <h2>Article</h2>
-        <h4>{{id}}. {{title}}</h4>
-        <p>{{description}}</p>
     </script>
     <script type="text/javascript" src="backbone/articles.js"></script>
-    
-<?php 
-include __DIR__.'/footer.php';
+</body>
+</html>

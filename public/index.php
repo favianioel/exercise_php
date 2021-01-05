@@ -12,6 +12,12 @@ router('GET', '^/$', function() {
 	print $output;
 });
 
+router('GET', '^/test$', function() {
+	$file = __DIR__ . '/test.html';
+	$output = template( $file, [] );
+	print $output;
+});
+
 // GET all entities from one table
 router('GET', '^/authors$', function() {
 	$db = new Db();
