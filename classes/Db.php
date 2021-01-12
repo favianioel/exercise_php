@@ -98,6 +98,13 @@ class Db {
         return $this->con->query($sql, \PDO::FETCH_ASSOC);
     }
 
+    public function delete($table, $id)
+    {
+        $sql = "DELETE FROM ".$this->escape($table);
+        $sql .= "WHERE id = ".$this->escape($id);
+        return $this->con->query($sql, \PDO::FETCH_ASSOC);
+    }
+
     /**
      * Escape a parameter
      *

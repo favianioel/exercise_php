@@ -1,22 +1,10 @@
 <?php
 require_once __DIR__ . '/../init.php';
 require_once __DIR__ . '/../src/functions.php';
+header('Access-Control-Allow-Origin: *');
+
 
 use Exercise\Db;
-
-
-// Default index page
-router('GET', '^/$', function() {
-	$file = __DIR__ . '/../templates/articles.php';
-	$output = template( $file, [] );
-	print $output;
-});
-
-router('GET', '^/test$', function() {
-	$file = __DIR__ . '/test.html';
-	$output = template( $file, [] );
-	print $output;
-});
 
 // GET all entities from one table
 router('GET', '^/authors$', function() {
@@ -56,11 +44,48 @@ router('GET', '^/categories/(?<id>\d+)$', function($params) {
     echo json_encode($result->fetchAll());
 });
 
-// POST request to /autors
+// POST requests
+router('POST', '^/articles$', function() {
+	header('Content-Type: application/json');
+	$input = file_get_contents("php://input");
+	$json = json_decode($input,true);
+    $db = new Db();
+    $result = $db->createArticle($json["title"], $json["author"]);
+    echo json_encode($result->fetchAll());
+});
+
 router('POST', '^/authors$', function() {
-    header('Content-Type: application/json');
-    $json = json_decode(file_get_contents('php://input'), true);
-    echo json_encode(['result' => 1]);
+});
+
+router('POST', '^/categories$', function() {
+});
+
+// PUT requests
+router('PUT', '^/articles/(?<id>\d+)$', function() {
+	$db = new Db();
+    $result = $db->updateArticleById($title, $author, $id);
+    echo json_encode($result->fetchAll());
+});
+router('PUT', '^/authors/(?<id>\d+)$', function() {
+});
+router('PUT', '^/categories/(?<id>\d+)$', function() {
+});
+
+// DELETE requests
+router('DELETE', '^/articles/(?<id>\d+)$', function() {
+	$db = new Db();
+	$result = $db->delete("articles", $params['id']);
+    echo json_encode($result->fetchAll());
+});
+router('DELETE', '^/authors/(?<id>\d+)$', function() {
+	$db = new Db();
+	$result = $db->delete("authors", $params['id']);
+    echo json_encode($result->fetchAll());
+});
+router('DELETE', '^/categories/(?<id>\d+)$', function() {
+	$db = new Db();
+	$result = $db->delete("categories", $params['id']);
+    echo json_encode($result->fetchAll());
 });
 
 header("HTTP/1.0 404 Not Found");
