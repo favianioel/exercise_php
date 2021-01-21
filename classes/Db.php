@@ -89,10 +89,10 @@ class Db {
         return $this->con->query($sql, \PDO::FETCH_ASSOC);
     }
 
-    public function updateArticleById($title, $author, $id)
+    public function updateArticleById($id, $title, $author, $description)
     {
         $sql  = "UPDATE `articles` ";
-        $sql .= "SET `title` = ".$this->escape($title).", `author_id` = ".$this->escape($author)." ";
+        $sql .= "SET `title` = ".$this->escape($title).", `author_id` = ".$this->escape($author)." , `description` = ".$this->escape($description)." ";
         $sql .= "WHERE id = ".$this->escape($id);
         
         return $this->con->query($sql, \PDO::FETCH_ASSOC);

@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Authors</title>
+  <!-- Dependencies -->
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+  <script src="http://underscorejs.org/underscore-min.js"></script>
+  <script src="http://backbonejs.org/backbone-min.js"></script>
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css">
+  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.js"></script>
+  <!-- The actual code -->
+  <style type="text/css">
+    .wrapper{
+      width: 650px;
+      margin: 0 auto;
+    }
+    .page-header h2{
+      margin-top: 0;
+    }
+    table tr td:last-child a{
+      margin-right: 15px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <ul class="nav nav-tabs">
+      <li role="presentation" id="nav_art">
+        <a href="#">Articles</a></li>
+      <li role="presentation" id="nav_aut">
+        <a href="#authors">Authors</a></li>
+      <li role="presentation" id="nav_cat">
+        <a href="#categories">Categories</a></li>
+    </ul>
+  </div>
+      <!-- Sidebar -->
+    <div id="sidebar">
+        
+    </div>
+  <div class="wrapper">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="page-header clearfix">
+                      <div id="header">
+                      </div>
+                      <br>
+                      <div id="content">
+                      </div>
+                    </div>
+                </div>
+            </div>        
+        </div>
+    </div>
+    <!-- templates -->
+    <script type="text/template" id="tpl-header">
+      <button class="btn btn-dark new">New Entity</button>
+    </script>
+
+    <script type="text/template" id="tpl-article-list-item">
+      <a href="#articles/<%= id %>"><%= title %></a>
+    </script>
+
+    <script type="text/template" id="tpl-author-list-item">
+      <a href="#authors/<%= id %>"><%= name %></a>
+    </script>
+
+    <script type="text/template" id="tpl-category-list-item">
+      <a href="#categories/<%= id %>"><%= categorie %></a>
+    </script>
+
+
+    <script type="text/template" id="tpl-article-details">
+      <div class="form-group">
+          <label>Id:</label>
+          <input class="form-control" type="text" id="articleId" name="id" value="<%= id %>" disabled />
+          <label>Title:</label>
+          <input class="form-control" type="text" id="title" name="title" value="<%= title %>" required/>
+          <label>author_id:</label>
+          <input class="form-control" type="text" id="author_id" name="author_id" value="<%= author_id %>"/>
+          <label>Description:</label>
+          <textarea class="form-control" id="description" name="description"><%= description %></textarea>
+      </div>
+      <button type="button" class="btn btn-dark save">Save</button>
+      <button type="button" class="btn btn-danger delete">Delete</button>
+    </script>
+
+    <script type="text/template" id="tpl-author-details">
+      <div class="form-group">
+          <label>Id:</label>
+          <input class="form-control" type="text" id="authorId" name="id" value="<%= id %>" disabled />
+          <label>Name:</label>
+          <input class="form-control" type="text" id="name" name="name" value="<%= name %>" required/>
+      </div>
+      <button type="button" class="btn btn-dark save">Save</button>
+      <button type="button" class="btn btn-danger delete">Delete</button>
+    </script>
+
+    <script type="text/template" id="tpl-category-details">
+      <div class="form-group">
+          <label>Id:</label>
+          <input class="form-control" type="text" id="categoryId" name="id" value="<%= id %>" disabled />
+          <label>Category:</label>
+          <input class="form-control" type="text" id="category" name="category" value="<%= categorie %>" required/>
+      </div>
+      <button type="button" class="btn btn-dark save">Save</button>
+      <button type="button" class="btn btn-danger delete">Delete</button>
+    </script>
+
+    <script src="js/models.js"></script>
+    <script src="js/views.js"></script>
+    <script src="js/router.js"></script>
+</body>
+</html>
