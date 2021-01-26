@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/../init.php';
 require_once __DIR__ . '/../src/functions.php';
+header('Content-Type: application/json');
 
 use Exercise\Db;
 
@@ -42,23 +43,6 @@ router('GET', '^/api/categories/(?<id>\d+)$', function($params) {
     echo json_encode($result->fetchAll());
 });
 
-// POST requests
-router('POST', '^/api/articles$', function() {
-	header('Content-Type: application/json');
-	$input = file_get_contents("php://input");
-	$json = json_decode($input);
-	var_dump($input,$json);die;
-    $db = new Db();
-    $result = $db->createArticle($json["title"], $json["author"]);
-    echo json_encode($result->fetchAll());
-});
-
-router('POST', '^/api/authors$', function() {
-});
-
-router('POST', '^/api/categories$', function() {
-});
-
 // PUT requests
 router('PUT', '^/api/articles/(?<id>\d+)$', function() {
 	$input = file_get_contents("php://input");
@@ -68,26 +52,60 @@ router('PUT', '^/api/articles/(?<id>\d+)$', function() {
     $result = $db->updateArticleById($input->id, $input->title, $input->author_id, $input->description);
     echo json_encode($result->fetchAll());
 });
-router('PUT', '^/api/authors/(?<id>\d+)$', function() {
+router('PUT', '^/api/articles/$', function() {
+	$input = file_get_contents("php://input");
+	$input = json_decode($input);
+	$db 	= new Db();
+    $result = $db->createArticle($input->title, $input->author_id, $input->description);
+    echo json_encode($result->fetchAll());
 });
+
+router('PUT', '^/api/authors/(?<id>\d+)$', function() {
+	$input = file_get_contents("php://input");
+	$input = json_decode($input);
+	
+	$db 	= new Db();
+    $result = $db->updateAuthorById($input->id, $input->name);
+    echo json_encode($result->fetchAll());
+});
+router('PUT', '^/api/authors/$', function() {
+	$input = file_get_contents("php://input");
+	$input = json_decode($input);
+	$db 	= new Db();
+    $result = $db->createAuthor($input->name);
+    echo json_encode($result->fetchAll());
+});
+
 router('PUT', '^/api/categories/(?<id>\d+)$', function() {
+	$input = file_get_contents("php://input");
+	$input = json_decode($input);
+	$db 	= new Db();
+    $result = $db->updateCategoryById($input->id, $input->categorie);
+    echo json_encode($result->fetchAll());
+});
+router('PUT', '^/api/categories/$', function() {
+	$input = file_get_contents("php://input");
+	$input = json_decode($input);
+	$db 	= new Db();
+    $result = $db->createCategory($input->categorie);
+    echo json_encode($result->fetchAll());
 });
 
 // DELETE requests
-router('DELETE', '^/api/articles/(?<id>\d+)$', function() {
+router('DELETE', '^/api/articles/(?<id>\d+)$', function($params) {
 	$db = new Db();
 	$result = $db->delete("articles", $params['id']);
-    echo json_encode($result->fetchAll());
+    echo json_encode($result);
 });
-router('DELETE', '^/api/authors/(?<id>\d+)$', function() {
+router('DELETE', '^/api/authors/(?<id>\d+)$', function($params) {
 	$db = new Db();
 	$result = $db->delete("authors", $params['id']);
-    echo json_encode($result->fetchAll());
+    echo json_encode($result);
 });
-router('DELETE', '^/api/categories/(?<id>\d+)$', function() {
+router('DELETE', '^/api/categories/(?<id>\d+)$', function($params) {
 	$db = new Db();
 	$result = $db->delete("categories", $params['id']);
-    echo json_encode($result->fetchAll());
+    echo json_encode($result);
 });
 
 header("HTTP/1.0 404 Not Found");

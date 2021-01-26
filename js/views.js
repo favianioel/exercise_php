@@ -72,7 +72,6 @@ window.ArticleView = Backbone.View.extend({
             author_id:$('#author_id').val(),
             description:$('#description').val()
         });
-        console.log(this.model, '1');
         if (this.model.isNew()) {
             var self = this;
             app.articles.create(this.model, {
@@ -81,7 +80,6 @@ window.ArticleView = Backbone.View.extend({
                 }
             });
         } else {
-            console.log(this.model, '2');
             this.model.save();
         }
  
@@ -321,7 +319,6 @@ window.CategoryView = Backbone.View.extend({
     deleteCategory:function () {
         this.model.destroy({
             success:function () {
-                alert('Category deleted successfully');
                 window.history.back();
             }
         });

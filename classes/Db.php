@@ -81,13 +81,31 @@ class Db {
         return $this->con->query($sql, \PDO::FETCH_ASSOC);
     }
 
-    public function createArticle($title, $author)
+    public function createArticle($title, $author, $description)
     {
-        $sql  = "INSERT INTO `articles` (`title`, `author_id`) ";
-        $sql .= "VALUES (" . $this->escape($title) .", ".$this->escape($author).")";
+        $sql  = "INSERT INTO `articles` (`title`, `author_id`, `description`) ";
+        $sql .= "VALUES (" . $this->escape($title) .", ".$this->escape($author).", ".$this->escape($description).")";
         
         return $this->con->query($sql, \PDO::FETCH_ASSOC);
     }
+
+    public function createAuthor($name)
+    {
+        $sql  = "INSERT INTO `authors` (`name`) ";
+        $sql .= "VALUES (".$this->escape($name).")";
+        
+        return $this->con->query($sql, \PDO::FETCH_ASSOC);
+    }
+
+    public function createCategory($categorie)
+    {
+        $sql  = "INSERT INTO `categories` (`categorie`) ";
+        $sql .= "VALUES (".$this->escape($categorie).")";
+        
+        return $this->con->query($sql, \PDO::FETCH_ASSOC);
+    }
+
+
 
     public function updateArticleById($id, $title, $author, $description)
     {
@@ -98,11 +116,29 @@ class Db {
         return $this->con->query($sql, \PDO::FETCH_ASSOC);
     }
 
+    public function updateAuthorById($id, $name)
+    {
+        $sql  = "UPDATE `authors` ";
+        $sql .= "SET `name` = ".$this->escape($name)." ";
+        $sql .= "WHERE id = ".$this->escape($id);
+        
+        return $this->con->query($sql, \PDO::FETCH_ASSOC);
+    }
+
+    public function updateCategoryById($id, $categorie)
+    {
+        $sql  = "UPDATE `categories` ";
+        $sql .= "SET `categorie` = ".$this->escape($categorie)." ";
+        $sql .= "WHERE id = ".$this->escape($id);
+        
+        return $this->con->query($sql, \PDO::FETCH_ASSOC);
+    }
+
     public function delete($table, $id)
     {
         $sql = "DELETE FROM ".$this->escape($table);
-        $sql .= "WHERE id = ".$this->escape($id);
-        return $this->con->query($sql, \PDO::FETCH_ASSOC);
+        $sql .= " WHERE id = ".$this->escape($id);
+        return $this->con->query($sql);
     }
 
     /**
