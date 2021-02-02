@@ -41,14 +41,28 @@ window.ArticleListItemView = Backbone.View.extend({
 window.ArticleView = Backbone.View.extend({
 
     template:_.template($('#tpl-article-details').html()),
+    authors: false,
  
-    initialize:function () {
+    initialize:function (options) {
+      // this.options = options || {};
+        this.authors = new AuthorCollection();
+        var self = this;
+        this.authors.fetch({
+          success:_.bind(function (data) {
+            self.authors = data
+            self.render();
+          })
+        });
+
+      this.authors.bind("change", this.render, this);
       this.model.bind("change", this.render, this);
     },
  
     render:function (eventName) {
-        $(this.el).html(this.template(this.model.toJSON()));
-        return this;
+        if (this.authors) {
+            $(this.el).html(this.template({article:this.model.toJSON(), authors: this.authors}));
+            return this;
+        }
     },
  
     events:{

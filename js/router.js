@@ -34,9 +34,12 @@ var Router = Backbone.Router.extend({
   articleDetails: function(id) {
     if (this.articleList) {
       this.article = this.articleList.get(id);
+
       if (this.articleView) this.articleView.close();
       this.articleView = new ArticleView({model:this.article});
-      $('#content').html(this.articleView.render().el);
+      if (this.articleView.render()) {
+        $('#content').html(this.articleView.render().el);
+      }
     } else {
       this.requestedId = id;
       this.list();

@@ -74,13 +74,21 @@
     <script type="text/template" id="tpl-article-details">
       <div class="form-group">
           <label>Id:</label>
-          <input class="form-control" type="text" id="articleId" name="id" value="<%= id %>" disabled />
+          <input class="form-control" type="text" id="articleId" name="id" value="<%= article.id %>" disabled />
           <label>Title:</label>
-          <input class="form-control" type="text" id="title" name="title" value="<%= title %>" required/>
-          <label>author_id:</label>
-          <input class="form-control" type="text" id="author_id" name="author_id" value="<%= author_id %>"/>
+          <input class="form-control" type="text" id="title" name="title" value="<%= article.title %>" required/>
+
+          <label for="exampleFormControlSelect1">Author</label>
+
+          <select class="form-control" id="author_id">
+            <% for(var i = 0; i < authors.length; ++i) { %>
+            <% authorObject = authors.get(i+1).toJSON() %>
+              <option value="<%= authorObject.id %>" <% if( article.author_id == authorObject.id) { %> selected="selected"<% } %>><%= authorObject.name %></option>
+            <% } %>
+          </select>
+
           <label>Description:</label>
-          <textarea class="form-control" id="description" name="description"><%= description %></textarea>
+          <textarea class="form-control" id="description" name="description"><%= article.description %></textarea>
       </div>
       <button type="button" class="btn btn-dark save">Save</button>
       <button type="button" class="btn btn-danger delete">Delete</button>
