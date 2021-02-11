@@ -4,12 +4,13 @@
 <head>
   <title>Authors</title>
   <!-- Dependencies -->
-  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/multi-select/0.9.12/css/multi-select.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
   <script src="http://underscorejs.org/underscore-min.js"></script>
   <script src="http://backbonejs.org/backbone-min.js"></script>
-  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css">
-  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.js"></script>
-  <!-- The actual code -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/multi-select/0.9.12/js/jquery.multi-select.min.js"></script>
   <style type="text/css">
     .wrapper{
       width: 650px;
@@ -75,20 +76,37 @@
       <div class="form-group">
           <label>Id:</label>
           <input class="form-control" type="text" id="articleId" name="id" value="<%= article.id %>" disabled />
+          <br>
           <label>Title:</label>
           <input class="form-control" type="text" id="title" name="title" value="<%= article.title %>" required/>
-
+          <br>
           <label for="exampleFormControlSelect1">Author</label>
-
           <select class="form-control" id="author_id">
             <% for(var i = 0; i < authors.length; ++i) { %>
-            <% authorObject = authors.get(i+1).toJSON() %>
-              <option value="<%= authorObject.id %>" <% if( article.author_id == authorObject.id) { %> selected="selected"<% } %>><%= authorObject.name %></option>
+              <% authorObject = authors.at(i).toJSON() %>
+              <option value="<%= authorObject.id %>" <% if( article.author_id == authorObject.id) { %> selected="selected"<% } %>>
+                <%= authorObject.name %>
+              </option> 
             <% } %>
           </select>
-
+          <br>
           <label>Description:</label>
-          <textarea class="form-control" id="description" name="description"><%= article.description %></textarea>
+          <textarea class="form-control" rows="5" id="description" name="description"><%= article.description %></textarea>
+          <br>
+          <label> Categories:</label>
+          <select multiple="multiple" id="article_categories" name="categories[]">
+            <% for(var i = 0; i < categories.length; ++i) { %>
+              <% categoriesObject = categories.at(i).toJSON(); var selected = 0; %>
+              <% if(art_cat) { %>
+                <% for(var x = 0; x < art_cat.length; ++x) { 
+                    if(art_cat[x].categories_id == categoriesObject.id) {
+                      selected =1;
+                    }
+                 } %>
+              <% } %>
+              <option <% if(selected == 1){%>selected<%}%>><%=categoriesObject.categorie%></option>
+            <% } %>
+          </select>
       </div>
       <button type="button" class="btn btn-dark save">Save</button>
       <button type="button" class="btn btn-danger delete">Delete</button>

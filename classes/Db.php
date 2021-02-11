@@ -23,6 +23,7 @@ class Db {
         return $this->con->query($sql, \PDO::FETCH_ASSOC);
     }
 
+
     public function viewAuthor($id)
     {
         $sql = "SELECT articles.title  FROM articles 
@@ -136,9 +137,18 @@ class Db {
 
     public function delete($table, $id)
     {
-        $sql = "DELETE FROM ".$this->escape($table);
+        $sql = "DELETE FROM ". $table;
         $sql .= " WHERE id = ".$this->escape($id);
         return $this->con->query($sql);
+    }
+
+    public function getArticleCategories($id)
+    {
+        $sql = "SELECT categories_id
+        from articles_categories 
+        where articles_id = " . $this->escape($id);
+
+        return $this->con->query($sql, \PDO::FETCH_ASSOC);
     }
 
     /**

@@ -46,6 +46,7 @@ window.ArticleView = Backbone.View.extend({
     initialize:function (options) {
       // this.options = options || {};
         this.authors = new AuthorCollection();
+        this.categories = new CategoryCollection();
         var self = this;
         this.authors.fetch({
           success:_.bind(function (data) {
@@ -53,14 +54,42 @@ window.ArticleView = Backbone.View.extend({
             self.render();
           })
         });
+        this.categories.fetch({
+          success:_.bind(function (data) {
+            self.categories = data
+            self.render();
+          })
+        });
+
+        this.article_categories;
+        Backbone.ajax({
+            url: `http://localhost:8000/api/categories/article/${this.model.id}`,
+            data: "",
+            success: _.bind(function (data) {
+            self.article_categories = data
+            self.render();
+          })
+        });
+
 
       this.authors.bind("change", this.render, this);
+      this.categories.bind("change", this.render, this);
       this.model.bind("change", this.render, this);
     },
  
     render:function (eventName) {
         if (this.authors) {
-            $(this.el).html(this.template({article:this.model.toJSON(), authors: this.authors}));
+            $.when($(this.el).html(this.template({
+                article:this.model.toJSON(),
+                authors: this.authors,
+                categories: this.categories,
+                art_cat: this.article_categories
+             }))).then(function() {
+            $('#article_categories').multiSelect({
+                 selectableHeader: "<div class='custom-header'>all categories</div>",
+                    selectionHeader: "<div class='custom-header'>article categories</div>",
+            });
+          });
             return this;
         }
     },
@@ -84,7 +113,8 @@ window.ArticleView = Backbone.View.extend({
             id:$('#articleId').val(),
             title:$('#title').val(),
             author_id:$('#author_id').val(),
-            description:$('#description').val()
+            description:$('#description').val(),
+            categories:$('#article_categories').val()
         });
         if (this.model.isNew()) {
             var self = this;
@@ -94,7 +124,11 @@ window.ArticleView = Backbone.View.extend({
                 }
             });
         } else {
-            this.model.save();
+            this.model.save([], {
+                success:function () {
+                    window.history.back();
+                }
+            });
         }
  
         return false;
@@ -219,13 +253,18 @@ window.AuthorView = Backbone.View.extend({
         });
         if (this.model.isNew()) {
             var self = this;
+            console.log('isNew');
             app.author.create(this.model, {
                 success:function () {
                     app.navigate('authors/' + self.model.id, false);
                 }
             });
         } else {
-            this.model.save();
+            this.model.save([], {
+                success:function () {
+                    window.history.back();
+                }
+            });
         }
  
         return false;
@@ -324,7 +363,11 @@ window.CategoryView = Backbone.View.extend({
                 }
             });
         } else {
-            this.model.save();
+            this.model.save([], {
+                success:function () {
+                    window.history.back();
+                }
+            });
         }
  
         return false;

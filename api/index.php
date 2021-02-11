@@ -56,8 +56,8 @@ router('PUT', '^/api/articles/$', function() {
 	$input = file_get_contents("php://input");
 	$input = json_decode($input);
 	$db 	= new Db();
-    $result = $db->createArticle($input->title, $input->author_id, $input->description);
-    echo json_encode($result->fetchAll());
+    $db->createArticle($input->title, $input->author_id, $input->description);
+	// $db->updateCategoriesToArticles($input->categories);
 });
 
 router('PUT', '^/api/authors/(?<id>\d+)$', function() {
@@ -106,6 +106,12 @@ router('DELETE', '^/api/categories/(?<id>\d+)$', function($params) {
 	$db = new Db();
 	$result = $db->delete("categories", $params['id']);
     echo json_encode($result);
+});
+
+router('GET', '^/api/categories/article/(?<id>\d+)$', function($params) {
+	$db = new Db();
+	$result = $db->getArticleCategories($params['id']);
+    echo json_encode($result->fetchAll());
 });
 
 header("HTTP/1.0 404 Not Found");
