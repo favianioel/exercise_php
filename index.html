@@ -104,7 +104,7 @@
                     }
                  } %>
               <% } %>
-              <option <% if(selected == 1){%>selected<%}%>><%=categoriesObject.categorie%></option>
+              <option value="<%= categoriesObject.id %>" <% if(selected == 1){%>selected<%}%>><%=categoriesObject.categorie%></option>
             <% } %>
           </select>
       </div>

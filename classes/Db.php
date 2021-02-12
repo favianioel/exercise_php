@@ -142,6 +142,20 @@ class Db {
         return $this->con->query($sql);
     }
 
+    public function updateCategoriesToArticles($artid, $catids)
+    {
+
+        // $this->con->beginTransaction();
+        $drop = "DELETE FROM articles_categories WHERE articles_id = ".$this->escape($artid);
+        $this->con->exec($drop);
+        foreach ($catids as $value) {
+            $sql  = "INSERT INTO articles_categories (articles_id, categories_id) ";
+            $sql .= "VALUES (".$this->escape($artid).",".$this->escape($value).")";
+            $this->con->exec($sql);
+        }
+
+    }
+
     public function getArticleCategories($id)
     {
         $sql = "SELECT categories_id

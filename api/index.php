@@ -47,17 +47,15 @@ router('GET', '^/api/categories/(?<id>\d+)$', function($params) {
 router('PUT', '^/api/articles/(?<id>\d+)$', function() {
 	$input = file_get_contents("php://input");
 	$input = json_decode($input);
-	
 	$db 	= new Db();
-    $result = $db->updateArticleById($input->id, $input->title, $input->author_id, $input->description);
-    echo json_encode($result->fetchAll());
+    $db->updateArticleById($input->id, $input->title, $input->author_id, $input->description);
+	$db->updateCategoriesToArticles($input->id, $input->categories);
 });
 router('PUT', '^/api/articles/$', function() {
 	$input = file_get_contents("php://input");
 	$input = json_decode($input);
 	$db 	= new Db();
     $db->createArticle($input->title, $input->author_id, $input->description);
-	// $db->updateCategoriesToArticles($input->categories);
 });
 
 router('PUT', '^/api/authors/(?<id>\d+)$', function() {
